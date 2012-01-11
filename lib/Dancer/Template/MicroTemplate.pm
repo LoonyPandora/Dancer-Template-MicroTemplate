@@ -10,26 +10,18 @@ use Dancer::FileUtils 'path';
 use vars '$VERSION';
 use base 'Dancer::Template::Abstract';
 
-$VERSION = '0.01';
+$VERSION = '0.1.0';
 
 my $_engine;
 
 sub init {
     my $self = shift;
 
-    my $mt_cfg = {
-        use_cache  => 0,
-        line_start => '%',
-        tag_start  => $self->config->{start_tag} || '<%',
-        tag_end    => $self->config->{stop_tag} || '%>',
+    my %mt_cfg = (
+        %{$self->config},
+    );
 
-    };
-
-    my $path = path($self->{settings}{appdir}, 'views');
-    $mt_cfg->{include_path} = [$path]
-      if $self->{settings} && $self->{settings}{appdir};
-
-    $_engine = Text::MicroTemplate::File->new(%$mt_cfg);
+    $_engine = Text::MicroTemplate::File->new(%mt_cfg);
 }
 
 sub render($$$) {
@@ -70,7 +62,7 @@ L<Dancer>, L<Text::MicroTemplate>
 
 =head1 AUTHOR
 
-This module has been written by Franck Cuny
+This module has been written by Franck Cuny, additional code provided by James Aitken
 
 =head1 LICENSE
 
