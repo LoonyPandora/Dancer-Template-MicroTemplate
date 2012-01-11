@@ -1,11 +1,11 @@
 package Dancer::Template::MicroTemplate;
 
+# ABSTRACT: Text::MicroTemplate engine for Dancer
+
 use strict;
 use warnings;
 
 use Text::MicroTemplate::File;
-use Dancer::ModuleLoader;
-use Dancer::FileUtils 'path';
 
 use vars '$VERSION';
 use base 'Dancer::Template::Abstract';
@@ -17,9 +17,7 @@ my $_engine;
 sub init {
     my $self = shift;
 
-    my %mt_cfg = (
-        %{$self->config},
-    );
+    my %mt_cfg = (%{ $self->config });
 
     $_engine = Text::MicroTemplate::File->new(%mt_cfg);
 }
@@ -28,7 +26,7 @@ sub render($$$) {
     my ($self, $template, $tokens) = @_;
 
     die "'$template' is not a regular file"
-      if ref($template) || (!-f $template);
+        if ref($template) || (!-f $template);
 
     my $content = "";
     $content = $_engine->render_file($template, $tokens)->as_string;
@@ -36,13 +34,10 @@ sub render($$$) {
 }
 
 1;
-__END__
-
-=pod
 
 =head1 NAME
 
-Dancer::Template::MicroTemplate - MicroTemplate wrapper for Dancer
+Dancer::Template::MicroTemplate - Text::MicroTemplate engine for Dancer
 
 =head1 DESCRIPTION
 
@@ -62,11 +57,11 @@ L<Dancer>, L<Text::MicroTemplate>
 
 =head1 AUTHOR
 
-This module has been written by Franck Cuny, additional code provided by James Aitken
+This module has been written by Franck Cuny and James Aitken
 
 =head1 LICENSE
 
-This module is free software and is released under the same terms as Perl
-itself.
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
